@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+
+# Django
+db.sqlite3
+media/
+staticfiles/
+
+# Env
+.env
+.venv/
+venv/
+env/
+
+# Conda
+conda-meta/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Pytest
+.pytest_cache/
+
+# Migrations cache
+*.sqlite3
