@@ -6,20 +6,42 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
 
-        self.stdout.write("")
-        self.stdout.write("===== SINGULARITY BOUND =====")
-        self.stdout.write("")
-        self.stdout.write("Comandos principais:")
-        self.stdout.write("")
-        self.stdout.write("status_universe")
-        self.stdout.write("next_turn")
-        self.stdout.write("aura_report")
-        self.stdout.write("trigger_event")
-        self.stdout.write("resolve_event 1")
-        self.stdout.write("factions_report")
-        self.stdout.write("invest_science")
-        self.stdout.write("emergency_mining")
-        self.stdout.write("negotiate")
-        self.stdout.write("risky_slingshot")
-        self.stdout.write("seed_universe")
-        self.stdout.write("")
+        lines = [
+            "",
+            "===== SINGULARITY BOUND =====",
+            "",
+            "ESTADO:",
+            " status_universe",
+            " aura_report",
+            " logs_report",
+            "",
+            "TEMPO:",
+            " next_turn",
+            "",
+            "POLÍTICA:",
+            " trigger_event",
+            " resolve_event 1",
+            " factions_report",
+            "",
+            "CIÊNCIA:",
+            " start_research warp_drive",
+            " research_status",
+            "",
+            "EXPANSÃO:",
+            " explore_sector",
+            " sectors_report",
+            " colonize_sector alpha X-441",
+            "",
+            "MILITAR:",
+            " build_fleet alpha",
+            " fleets_report",
+            " attack_faction alpha \"Clã Draconis\"",
+            " repair_fleets",
+            "",
+            "ADMIN:",
+            " seed_universe",
+            "",
+        ]
+
+        for line in lines:
+            self.stdout.write(line)
