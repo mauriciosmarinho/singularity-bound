@@ -4,6 +4,9 @@ from turns.models import Turn
 from core.services.economy import apply_income
 from core.services.rival_ai import run_rival_turn
 
+from .events import trigger_rare_event
+from .victory import check_game_state
+
 
 class TurnEngine:
 
@@ -27,5 +30,7 @@ class TurnEngine:
         )
 
         text += run_rival_turn()
+        text += trigger_rare_event(commander)
+        text += check_game_state(commander)
 
         return text
