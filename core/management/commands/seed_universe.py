@@ -5,6 +5,7 @@ from turns.models import Turn
 from logs.models import LogEntry
 from core.models import Faction
 from events.models import ActiveEvent
+from core.models import Leader
 
 
 class Command(BaseCommand):
@@ -41,6 +42,27 @@ class Command(BaseCommand):
         LogEntry.objects.create(
             turn=1,
             message="AURA online. Nova campanha iniciada."
+        )
+
+        # lideres unicos recrutaveis
+        Leader.objects.all().delete()
+
+        Leader.objects.create(
+            name="Almirante Vega",
+            role="Militar",
+            bonus="+20 poder de ataque",
+        )
+
+        Leader.objects.create(
+            name="Ministra Lyra",
+            role="Economia",
+            bonus="+30 minerals por turno",
+        )
+
+        Leader.objects.create(
+            name="Cientista Orion",
+            role="Pesquisa",
+            bonus="+25 science por turno",
         )
 
         self.stdout.write("")
