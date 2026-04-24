@@ -1,9 +1,13 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Turn(models.Model):
-    number = models.IntegerField(default=1)
-    processed_at = models.DateTimeField(auto_now=True)
+    number = models.IntegerField(unique=True)
+    processed_at = models.DateTimeField(default=timezone.now)
 
-    def __str__(self):
-        return f"Turn {self.number}"
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            last = Turn.objects.order_by("-number").first()
+            self.number = 1 if not last else last.number + 1
+        super().save(*args, **kwargs)

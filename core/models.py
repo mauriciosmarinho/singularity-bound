@@ -4,6 +4,7 @@ from django.db import models
 class Faction(models.Model):
     name = models.CharField(max_length=100, unique=True)
     relation = models.IntegerField(default=50)
+    military = models.IntegerField(default=10)
 
     def mood(self):
         if self.relation >= 70:

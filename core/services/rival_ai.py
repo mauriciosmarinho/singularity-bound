@@ -15,7 +15,7 @@ def run_rival_turn():
     roll = random.randint(1, 100)
 
     if roll <= 35:
-        draconis.power += 5
+        draconis.military += 5
         draconis.save()
         return "\nClã Draconis ampliou forças militares."
 
