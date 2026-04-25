@@ -1,39 +1,290 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Singularity Bound</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Singularity Bound</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:#0b1020;
+    color:#ffffff;
+}
+
+header{
+    background:#111933;
+    padding:24px;
+    text-align:center;
+    font-size:32px;
+    font-weight:bold;
+    letter-spacing:2px;
+}
+
+.container{
+    width:1200px;
+    max-width:95%;
+    margin:auto;
+    padding:30px 0;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+}
+
+.card{
+    background:#162042;
+    border-radius:14px;
+    padding:20px;
+    box-shadow:0 0 12px rgba(0,0,0,.35);
+}
+
+.card h2{
+    margin-top:0;
+    font-size:20px;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    padding-bottom:10px;
+}
+
+.stat{
+    margin:10px 0;
+    font-size:17px;
+}
+
+.actions{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-top:12px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    font-size:15px;
+    cursor:pointer;
+    background:#26c281;
+    color:white;
+    font-weight:bold;
+}
+
+button:hover{
+    opacity:.92;
+}
+
+.secondary{
+    background:#3498db;
+}
+
+.warning{
+    background:#e67e22;
+}
+
+.danger{
+    background:#e74c3c;
+}
+
+.footer{
+    margin-top:30px;
+    text-align:center;
+    color:#aab;
+    font-size:14px;
+}
+</style>
 </head>
+
 <body>
-    <h1>Singularity Bound</h1>
 
-    <form method="post" action="/next-turn/">
-        {% csrf_token %}
-        <button type="submit">Avançar Turno</button>
-    </form>
-    
-    <h2>Turno:
-        {% if turn %}
-            {{ turn.number }}
-        {% else %}
-            0
-        {% endif %}
-    </h2>
+<header>
+SINGULARITY BOUND
+</header>
 
-    <h3>Comandante</h3>
+<div class="container">
 
-    {% if commander %}
-        <p>Fuel: {{ commander.fuel }}</p>
-        <p>Minerals: {{ commander.minerals }}</p>
-        <p>Science: {{ commander.science }}</p>
-    {% else %}
-        <p>Nenhum comandante encontrado.</p>
-    {% endif %}
+<div class="grid">
 
-    <h3>Facções</h3>
+<!-- TURNO -->
+<div class="card">
+<h2>Turno Atual</h2>
 
-    {% for faction in factions %}
-        <p>{{ faction.name }} | Military: {{ faction.military }}</p>
-    {% endfor %}
+<p class="stat">
+{% if turn %}
+{{ turn.number }}
+{% else %}
+0
+{% endif %}
+</p>
+
+<div class="actions">
+<form method="post" action="/next-turn/">
+{% csrf_token %}
+<button type="submit">Avançar Turno</button>
+</form>
+</div>
+</div>
+
+<!-- RECURSOS -->
+<div class="card">
+<h2>Recursos</h2>
+
+{% if commander %}
+<p class="stat">Fuel: {{ commander.fuel }}</p>
+<p class="stat">Minerals: {{ commander.minerals }}</p>
+<p class="stat">Science: {{ commander.science }}</p>
+<p class="stat">Morale: {{ commander.morale }}</p>
+{% endif %}
+</div>
+
+<!-- FACÇÕES -->
+<div class="card">
+<h2>Facções</h2>
+
+{% for faction in factions %}
+<p class="stat">
+{{ faction.name }}<br>
+Military: {{ faction.military }}
+</p>
+{% endfor %}
+</div>
+
+<!-- EXPANSÃO -->
+<div class="card">
+<h2>Expansão</h2>
+
+<div class="actions">
+
+<form method="post" action="/colonize/">
+{% csrf_token %}
+<button class="secondary" type="submit">
+Colonizar Setor
+</button>
+</form>
+
+<form method="post" action="/explore_sector/">
+{% csrf_token %}
+<button class="secondary" type="submit">
+Explorar Fronteira
+</button>
+</form>
+
+</div>
+</div>
+
+<!-- CIÊNCIA -->
+<div class="card">
+<h2>Ciência</h2>
+
+<div class="actions">
+
+<form method="post" action="/research/">
+{% csrf_token %}
+<button class="secondary" type="submit">
+Pesquisar Tecnologia
+</button>
+</form>
+
+<form method="post" action="/laboratory/">
+{% csrf_token %}
+<button class="secondary" type="submit">
+Expandir Laboratório
+</button>
+</form>
+
+</div>
+</div>
+
+<!-- MILITAR -->
+<div class="card">
+<h2>Militar</h2>
+
+<div class="actions">
+
+<form method="post" action="/fleet/">
+{% csrf_token %}
+<button class="warning" type="submit">
+Construir Frota
+</button>
+</form>
+
+<form method="post" action="/attack/">
+{% csrf_token %}
+<button class="danger" type="submit">
+Atacar Rival
+</button>
+</form>
+
+</div>
+</div>
+
+<!-- INTELIGÊNCIA -->
+<div class="card">
+<h2>Inteligência</h2>
+
+<div class="actions">
+
+<form method="post" action="/spy/">
+{% csrf_token %}
+<button class="secondary" type="submit">
+Espionar Rival
+</button>
+</form>
+
+<form method="post" action="/sabotage/">
+{% csrf_token %}
+<button class="warning" type="submit">
+Sabotar Base
+</button>
+</form>
+
+</div>
+</div>
+
+<!-- DIPLOMACIA -->
+<div class="card">
+<h2>Diplomacia</h2>
+
+<div class="actions">
+
+<form method="post" action="/negotiate/">
+{% csrf_token %}
+<button class="secondary" type="submit">
+Negociar
+</button>
+</form>
+
+<form method="post" action="/alliance/">
+{% csrf_token %}
+<button class="secondary" type="submit">
+Propor Aliança
+</button>
+</form>
+
+</div>
+</div>
+
+<!-- SETORES -->
+<div class="card">
+<h2>Setores</h2>
+
+{% for sector in sectors %}
+<p class="stat">
+{{ sector.name }} - {{ sector.owner }}
+</p>
+{% endfor %}
+</div>
+
+</div>
+
+<div class="footer">
+Império operacional • Semana 4
+</div>
+
+</div>
 
 </body>
 </html>
