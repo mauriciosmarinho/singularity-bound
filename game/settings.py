@@ -11,10 +11,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / ".env")
 
 # Segurança
-SECRET_KEY = os.getenv("SECRET_KEY")
-DEBUG = os.getenv("DEBUG", "False") == "True"
+SECRET_KEY = "django-insecure-singularity-bound-dev-key-2026" # os.getenv("SECRET_KEY")
+DEBUG = True #os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 # Aplicações instaladas
 INSTALLED_APPS = [
@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "logs",
     "aura",
     "events",
+    "interface",
 ]
 
 # Middleware

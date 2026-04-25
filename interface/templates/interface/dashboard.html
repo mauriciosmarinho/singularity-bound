@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Singularity Bound</title>
+</head>
+<body>
+    <h1>Singularity Bound</h1>
+
+    <form method="post" action="/next-turn/">
+        {% csrf_token %}
+        <button type="submit">Avançar Turno</button>
+    </form>
+    
+    <h2>Turno:
+        {% if turn %}
+            {{ turn.number }}
+        {% else %}
+            0
+        {% endif %}
+    </h2>
+
+    <h3>Comandante</h3>
+
+    {% if commander %}
+        <p>Fuel: {{ commander.fuel }}</p>
+        <p>Minerals: {{ commander.minerals }}</p>
+        <p>Science: {{ commander.science }}</p>
+    {% else %}
+        <p>Nenhum comandante encontrado.</p>
+    {% endif %}
+
+    <h3>Facções</h3>
+
+    {% for faction in factions %}
+        <p>{{ faction.name }} | Military: {{ faction.military }}</p>
+    {% endfor %}
+
+</body>
+</html>
