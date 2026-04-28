@@ -3,6 +3,7 @@ from .views import (
     dashboard, 
     next_turn_web,
     explore_sector_web,
+    sectors_report_web,
     colonize_web,
     fleet_web,
     research_web,
@@ -14,6 +15,7 @@ from .views import (
 urlpatterns = [
     path("", dashboard, name="dashboard"),
     path("next-turn/", next_turn_web, name="next_turn_web"),
+    path("sectors-report/", sectors_report_web, name="sectors_report_web"),
     path("explore-sector/", explore_sector_web, name="explore_sector_web"),
     path("colonize/", colonize_web, name="colonize_web"),
     path("fleet/", fleet_web, name="fleet_web"),

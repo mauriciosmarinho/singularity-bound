@@ -10,6 +10,7 @@
         body {
             margin: 0;
             font-family: Arial, Helvetica, sans-serif;
+            font-size: 15px;
             background: #0b1020;
             color: #ffffff;
         }
@@ -49,14 +50,14 @@
 
         .card h2 {
             margin-top: 0;
-            font-size: 20px;
+            font-size: 15px;
             border-bottom: 1px solid rgba(255, 255, 255, .08);
             padding-bottom: 10px;
         }
 
         .stat {
             margin: 8px 0;
-            font-size: 16px;
+            font-size: 12px;
         }
 
         .row {
@@ -70,8 +71,12 @@
             border-radius: 10px;
         }
 
+        .row_wrap {
+            flex-wrap: wrap;
+        }
+
         .small {
-            font-size: 14px;
+            font-size: 12px;
             color: #ccd;
         }
 
@@ -82,6 +87,13 @@
             cursor: pointer;
             color: white;
             font-weight: bold;
+        }
+
+        .button_small {
+            padding: 5px 7px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 10px;
         }
 
         .green {
@@ -112,8 +124,25 @@
             margin-top: 30px;
             text-align: center;
             color: #aab;
-            font-size: 14px;
+            font-size: 12px;
         }
+        
+        select {
+    appearance: none;        /* remove estilo nativo */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    background-color: #c62828; /* mesma cor do botão vermelho */
+    color: white;
+    border: none;
+    
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.2;
+
+    
+
+}
     </style>
 </head>
 
@@ -142,20 +171,25 @@
 
             <!-- TURNO -->
             <div class="card">
-                <h2>Turno Atual</h2>
-
-                <p class="stat">
+                <h2>
+                    Turno Atual:
                     {% if turn %}
                     {{ turn.number }}
                     {% else %}
                     0
                     {% endif %}
-                </p>
+                </h2>
 
                 <form method="post" action="/next-turn/">
                     {% csrf_token %}
                     <button class="green" type="submit">
                         Avançar Turno
+                    </button>
+                </form>
+                <form method="post" action="/sectors-report/">
+                    {% csrf_token %}
+                    <button class="orange" type="submit">
+                        Reportar Setores
                     </button>
                 </form>
                 <form method="post" action="/explore-sector/">
@@ -186,29 +220,37 @@
                 <h2>Facções</h2>
 
                 {% for faction in factions %}
-                <div class="row">
+                <div class="row row_wrap">
 
                     <div>
-                        <strong>{{ faction.name }}</strong><br>
-                        <span class="small">
-                            Military: {{ faction.military }}
-                        </span>
+                        <form method="post" action="/spy/{{ faction.name }}/">
+                            {% csrf_token %}
+                            <button class="blue button_small" type="submit">
+                                Spy
+                            </button>
+                            <strong>{{ faction.name }}</strong>
+                            <span class="small">
+                                Military: {{ faction.military }}
+                            </span>
+                        </form>
+
                     </div>
 
                     <div style="display:flex; gap:8px;">
 
-                        <form method="post" action="/spy/{{ faction.name }}/">
-                            {% csrf_token %}
-                            <button class="blue" type="submit">
-                                Espionar
-                            </button>
-                        </form>
 
-                        <form method="post" action="/attack/{{ faction.name }}/">
+
+                        <form method="post" action="/attack/">
                             {% csrf_token %}
-                            <button class="red" type="submit">
-                                Atacar
+                            <input type="hidden" name="faction_name" value="{{ faction.name }}" />
+                            <button class="red button_small" type="submit">
+                                Atacar com:
                             </button>
+                            <select name="fleet_name" class="red button_small">
+                                {% for fleet in fleets %}
+                                <option value="{{ fleet.name }}">{{ fleet.name }} ({{ fleet.power }})</option>
+                                {% endfor %}
+                            </select>
                         </form>
 
                     </div>
@@ -300,7 +342,7 @@
                         {% if sector.owner == "Livre" or sector.owner == "" %}
                         <form method="post" action="/colonize/">
                             {% csrf_token %}
-                            <input type="hidden" name="sector_name" value="{{ sector.name }}"/>
+                            <input type="hidden" name="sector_name" value="{{ sector.name }}" />
                             <select name="fleet_name">
                                 {% for fleet in fleets %}
                                 <option value="{{ fleet.name }}">{{ fleet.name }}</option>

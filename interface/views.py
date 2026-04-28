@@ -50,6 +50,17 @@ def explore_sector_web(request):
         messages.success(request, aura_text)
     return redirect("dashboard")
 
+def sectors_report_web(request):
+    if request.method == "POST":
+        out = StringIO()
+        call_command(
+            "sectors_report",
+            stdout=out
+        )
+        aura_text = out.getvalue()
+        messages.success(request, aura_text)
+    return redirect("dashboard")
+
 def colonize_web(request):
     if request.method =="POST":
         out = StringIO()
@@ -94,6 +105,13 @@ def negotiate_web(request):
     return redirect("dashboard")
 
 def attack_web(request):
-    if request.method == "POST":
-        call_command("attack_faction")
+    if request.method =="POST":
+        out = StringIO()
+        call_command("attack_faction", 
+            request.POST['fleet_name'], 
+            request.POST['faction_name'],
+            stdout=out
+        )
+        aura_text = out.getvalue()
+        messages.success(request, aura_text)
     return redirect("dashboard")
